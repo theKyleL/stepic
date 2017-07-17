@@ -24,22 +24,45 @@ def extractKey(): # remove (hexKey):
 	# return hexKey[7:]
 	return hex(value)[-2:]
 
-def xor(character, keyValue):
+# XOR char value with key
+def xor(character, keyValue, isHex):
+	#print('xor: ', character, keyValue)
+	if isHex:
+		return int(int(character, 16) ^ int(keyValue, 16))
 	return int(ord(character)) ^ int(keyValue, 16)
 			
+# format value to match requirements
+# e.g. Use '\x##' instead of '0x##'
+def printOut(data):
+	dat = data
+	for i in range()
+	print('Output: ' + ''.join(data))
+	
 # fit this function signature!!		
 def Crypt(unsignedChar, dataLength, initVal):
 	global value
 	dat = [] # output data stored here
 	value = (initVal) #initialize value for input
+	isHex = False
 	
-	for i in range(dataLength):
-		nextValue()
-		#formatting magic here
-		dat.append('\\' + str(hex(xor(unsignedChar[i], extractKey())))[1:]) 
+	# check for hex input
+	printOut('input: ' + unsignedChar)
+	if unsignedChar[:2] == '0x':
+		isHex = True
+		#print('input was in hex, converting to ascii')
+		
+		#process hex
+		for i in range(dataLength):
+			nextValue()
+			dat.append(chr(xor(unsignedChar[(4*i):(4*i)+4], extractKey(), isHex)))
 	
-	return ''.join(dat)
+	else:
+		# process chars
+		for i in range(dataLength):
+			nextValue()
+			dat.append(str(hex(xor(unsignedChar[i], extractKey(), isHex))))
 	
+	printOut(dat)
 	
 	
 if __name__ == '__main__':
@@ -47,8 +70,8 @@ if __name__ == '__main__':
 	#print(nextValue(0x10000)) # verify proper implementation of func output. 0x10000 => 0x1DF7615B
 
 	test1 = Crypt('apple', 5, 0x12345678)
-	print(test1)
 	
+	print()
 	
-	test2 = Crypt('\x4c\x88\x9e\xdf\xe8', 5, 0x12345678)
-	print(test2)
+	test2 = Crypt('0x4c0x880x9e0xdf0xe8', 5, 0x12345678)
+	
