@@ -8,49 +8,53 @@ __author__ = 'Kyle Latino'
 
 import sys
 
-value = 0x12345678 # initial value
-M = 0xE2089EA5 #modulous
+value = 0x12345678 # initial value will be passed in from function signature
+M = 0xE2089EA5 # modulous remains constant in this implementation
 
 # determine the next value for the key stream
 def nextValue():
 	global M, value
 	value = ((value ** 2) % M)
-	#return value
 
 #return lowest byte of the value
 def extractKey(): # remove (hexKey):
 	global value
-	#	return(hex(int(hexKey, 16) & 0xff))
-	# return hexKey[7:]
 	return hex(value)[-2:]
 
 # XOR char value with key
 def xor(character, keyValue, isHex):
 	#print('xor: ', character, keyValue)
 	if isHex:
-		return int(int(character, 16) ^ int(keyValue, 16))
+		return int(int(('0x' + character[2:]), 16) ^ int(keyValue, 16))
 	return int(ord(character)) ^ int(keyValue, 16)
 			
 # format value to match requirements
 # e.g. Use '\x##' instead of '0x##'
+def alterInputHex(inputHexValue):
+	convertedHex = inputHexValue.replace('\\x', '0x')
+	return convertedHex
+
+def alterOutputHex(outputHexValue):
+	return outputHexValue.replace('0x', '\\x')
+	
 def printOut(data):
-	dat = data
-	for i in range()
-	print('Output: ' + ''.join(data))
+	dat = ''.join(data)
+	dat = alterOutputHex(dat)
+	print(dat)
 	
 # fit this function signature!!		
 def Crypt(unsignedChar, dataLength, initVal):
 	global value
+	print((unsignedChar))
 	dat = [] # output data stored here
-	value = (initVal) #initialize value for input
+	inputChr = (unsignedChar) # 
+	value = (initVal) # initialize value from input
 	isHex = False
 	
 	# check for hex input
-	printOut('input: ' + unsignedChar)
-	if unsignedChar[:2] == '0x':
+	if inputChr[:2] == r'\x': # compare the 'raw' value of the string, ignoring ‘escape’ characters
 		isHex = True
-		#print('input was in hex, converting to ascii')
-		
+		inputValue = alterInputHex(inputChr) # convert input hex value to python native format
 		#process hex
 		for i in range(dataLength):
 			nextValue()
@@ -71,7 +75,12 @@ if __name__ == '__main__':
 
 	test1 = Crypt('apple', 5, 0x12345678)
 	
-	print()
+	print() # separate tests for readability
 	
-	test2 = Crypt('0x4c0x880x9e0xdf0xe8', 5, 0x12345678)
-	
+	test2 = Crypt(r'\x4c\x88\x9e\xdf\xe8', 5, 0x12345678)	
+	#
+	# NOTE: the use of the 'r' preceeding the input string ensures that the value is passed in its raw format.
+	#
+	# Without the 'r' it would be necessary to pass an escaped version of the string containing the hex value. 
+	# (e.g. '\\x4c\\x88\\x9e\\xdf\\xe8')
+	#
