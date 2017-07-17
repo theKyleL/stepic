@@ -23,13 +23,12 @@ def extractKey(): # remove (hexKey):
 
 # XOR char value with key
 def xor(character, keyValue, isHex):
-	#print('xor: ', character, keyValue)
 	if isHex:
 		return int(int(('0x' + character[2:]), 16) ^ int(keyValue, 16))
 	return int(ord(character)) ^ int(keyValue, 16)
 			
 # format value to match requirements
-# e.g. Use '\x##' instead of '0x##'
+# e.g. Use '\x##' instead of '0x##' for input and output of hex values
 def alterInputHex(inputHexValue):
 	convertedHex = inputHexValue.replace('\\x', '0x')
 	return convertedHex
