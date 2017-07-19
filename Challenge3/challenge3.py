@@ -4,6 +4,7 @@ __author__ = 'Kyle Latino'
 #
 # Used stackoverflow to learn how to create directories: https://stackoverflow.com/questions/273192/how-can-i-create-a-directory-if-it-does-not-exist
 #
+
 # imports
 import struct
 import hashlib
@@ -30,6 +31,7 @@ def createBMP(originFile, offset, length):
 
         outputFiles.append(newFileName)
 
+
 # start workflow here
 # accept input from std in identifying file name
 ####### commented for testing #######
@@ -50,9 +52,8 @@ with open(inputFileName, 'rb') as imgFile:
 
     # repeat till end of file
     fileBytes = imgFile.read(1)
-    filePos = 0
-    # bmpHeader = []
-    # bmpLength = []
+    filePos = 1
+    
     while len(fileBytes) > 0:
         # scan file for header data... bitmap header (BM / 0x42 0x4D), ignore empty blocks, else unknown
         # store header offset for file_name
