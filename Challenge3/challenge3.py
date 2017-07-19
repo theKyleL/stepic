@@ -2,7 +2,7 @@
 __author__ = 'Kyle Latino'
 #
 #
-# Used stackoverflow to learn how to create directories: https://stackoverflow.com/questions/273192/how-can-i-create-a-directory-if-it-does-not-exist
+# Referenced for creating directories: https://stackoverflow.com/questions/273192/how-can-i-create-a-directory-if-it-does-not-exist
 #
 # imports
 import struct
@@ -10,25 +10,25 @@ import hashlib
 import os
 
 # functions
-# get md5 hash of each file
+# get md5 hash of file
 def hashMD5(fileDat):
-    with open(fileDat, 'r') as hashFile:
+    with open(fileDat, 'rb') as hashFile:
         f1 = hashlib.md5()
         fileBytes = hashFile.read(4096)
         while len(fileBytes) > 0:
             f1.update(fileBytes)
             fileBytes = hashFile.read(4096)
-            print(f1.hexdigest())
+        return (f1.hexdigest())
 
 # create new bitmap file from offset and length
 def createBMP(originFile, offset, length):
     with open(originFile, 'rb') as origin:
-        newFileName = directory + str(offset) + '.bmp'
+        newFileName = directory + os.path.sep + str(offset) + '.bmp'
         with open(newFileName, 'wb+') as newImage:
             origin.seek(offset)
             newImage.write(origin.read(length))
-
-        outputFiles.append(newFileName)
+        #hashMD5(newFileName)
+        outputFiles.append(os.path.curdir + os.path.sep + newFileName)
 
 # start workflow here
 # accept input from std in identifying file name
@@ -40,8 +40,8 @@ bmpHeaderPos = []
 bmpLength = []
 
 with open(inputFileName, 'rb') as imgFile:
+    global directory
     print('\nsuccessfully opened file: ' + inputFileName + '\n')
-
     # create output folder with name '<inputFileName>_Output'
     directory = inputFileName[:len(inputFileName)-4] + '_Output' # truncate last 4 chars from inputFileName
     # print(directory)
@@ -68,7 +68,7 @@ with open(inputFileName, 'rb') as imgFile:
                 # store length
                 bmpLength.append(struct.unpack('i', imgFile.read(4))[0])
 
-        if filePos % 10000 == 0:
+        if filePos % 50000 == 0:
             print(bmpHeaderPos)
             print(bmpLength)
 
@@ -86,4 +86,4 @@ for i in range(len(bmpHeaderPos)):
 # get hashes of files
 print('\nfinding checksums')
 for file in outputFiles:
-    hashMD5(file)
+    print(file + ': ' + hashMD5(file))
