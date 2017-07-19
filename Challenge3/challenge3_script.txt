@@ -1,0 +1,31 @@
+Script started on Wed Jul 19 15:02:03 2017
+bash-3.2$ python3 challenge3.py
+Enter file name:
+>steg.bmp
+
+successfully opened file: steg.bmp
+
+found Bitmap header at: 0
+found Bitmap header at: 130448
+found unknown data at: 1216166
+
+Bitmap offsets: [0, 130448]
+Lengths: [1216166, 3038]
+
+Unknown file offsets: [1216166]
+Lengths: [1863]
+
+carving bitmap files
+
+carving unknown data
+
+finding checksums
+
+./steg_Output/0.bmp: c6c4dc5bce95f296188005c28a92c86c
+./steg_Output/130448.bmp: 0791b89fb49f891e8e6b3c1da65f0728
+./steg_Output/1216166.unknown: 3c4485e7caf893744ee434f14fe15488
+
+bash-3.2$ exit
+exit
+
+Script done on Wed Jul 19 15:02:30 2017
