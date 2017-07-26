@@ -24,7 +24,7 @@ def nextValue():
 #return lowest byte of the value
 def extractKey(): # remove (hexKey):
 	global value
-	return hex(value)[-2:]
+	return hex(value & 0xFF)	
 
 # XOR char value with key
 def xor(character, keyValue, isHex):
