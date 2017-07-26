@@ -104,23 +104,24 @@ with open(inputFileName, 'rb') as imgFile:
             unknownFileLength.append((imgFile.tell()-2) - unknownFilePos[len(unknownFilePos)-1])
 
 
+if __name__ == __main__:
 
-print('\nBitmap offsets: ' + str(bmpHeaderPos) + '\n' + 'Lengths: ' + str(bmpLength) )
+  print('\nBitmap offsets: ' + str(bmpHeaderPos) + '\n' + 'Lengths: ' + str(bmpLength) )
 
-print('\nUnknown file offsets: ' + str(unknownFilePos) + '\n' + 'Lengths: ' + str(unknownFileLength) + '\n')
+  print('\nUnknown file offsets: ' + str(unknownFilePos) + '\n' + 'Lengths: ' +  str(unknownFileLength) + '\n')
 
 
-# write files from found offsets and lengths
-print('carving bitmap files\n')
-for i in range(len(bmpHeaderPos)):
+  # write files from found offsets and lengths
+  print('carving bitmap files\n')
+  for i in range(len(bmpHeaderPos)):
     createFile(inputFileName, bmpHeaderPos[i], abs(bmpLength[i]), '.bmp')
 
-print('carving unknown data\n')
-for i in range(len(unknownFilePos)):
+  print('carving unknown data\n')
+  for i in range(len(unknownFilePos)):
     createFile(inputFileName, unknownFilePos[i], unknownFileLength[i], '.unknown')
 
-# get hashes of files
-print('finding checksums\n')
-for file in outputFiles:
+  # get hashes of files
+  print('finding checksums\n')
+  for file in outputFiles:
     print(file + ': ' + hashMD5(file))
-print()
+  print()
